@@ -87,7 +87,7 @@ void vTaskSensorSampler(void *pvParameters) {
     const TickType_t xFrequency = pdMS_TO_TICKS(500); // Chu kỳ lấy mẫu: 0.5 giây
 
     for (;;) {
-        // Chờ chính xác 2 giây (Task ở trạng thái Blocked, nhường CPU)
+        // Chờ chính xác 0.5 giây (Task ở trạng thái Blocked, nhường CPU)
         vTaskDelayUntil(&xLastWakeTime, xFrequency);
 
         // Giả lập đọc cảm biến hoặc phân tích gói UART từ PC
@@ -114,9 +114,9 @@ void vTaskUIManager(void *pvParameters) {
         // 1. Kiểm tra sự kiện người dùng từ Queue (Timeout 50ms)
         if (xQueueReceive(xQueueInputEvent, &received_event, pdMS_TO_TICKS(50)) == pdPASS) {
             if (received_event == EVENT_ROTATE_CW) {
-                current_page = (current_page + 1) % 2;
+                current_page = (current_page + 1) % 3;
             } else if (received_event == EVENT_ROTATE_CCW) {
-                current_page = (current_page == 0) ? 1 : 0;
+                current_page = (current_page - 1) % 3;
             } else if (received_event == EVENT_BUTTON_PRESS) {
                 // Xử lý action khi click nút
             }
@@ -147,7 +147,7 @@ void setup() {
     pinMode(PIN_ENCODER_SW, INPUT_PULLUP);
 
     // Gắn ngắt ngoài
-    attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_CLK), isr_encoder_change, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_CLK), isr_encoder_change, FALLING);
     attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_SW), isr_button_press, FALLING);
 
     // Khởi tạo FreeRTOS Primitives
