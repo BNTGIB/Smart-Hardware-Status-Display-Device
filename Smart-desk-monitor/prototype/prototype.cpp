@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <U8g2lib.h>
 #include <Wire.h>
+#include <DHT.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
