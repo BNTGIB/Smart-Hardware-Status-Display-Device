@@ -1,15 +1,9 @@
 #include <Arduino.h>
 
-
 #include "config.h"
 #include "AppContext.h"
 #include "Sensor.h"
 #include "DisplayTask.h"
-// Định nghĩa chân I2C mặc định cho ESP32-C3 SuperMini
-#define I2C_SDA_PIN 8
-#define I2C_SCL_PIN 9
-#define DHT_DATA_PIN 4
-
 
 void setup() {
     Serial.begin(115200);
