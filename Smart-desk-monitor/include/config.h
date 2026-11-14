@@ -11,6 +11,11 @@ constexpr uint8_t PIN_DHT_DATA = 4;
 constexpr uint8_t PIN_HEARTBEAT_LED = 2;
 constexpr uint8_t PIN_ALARM_LED = 16;
 
+constexpr uint8_t I2C_SDA_PIN = 8;
+constexpr uint8_t I2C_SCL_PIN = 9;
+
+constexpr uint8_t DHT_DATA_PIN = 4;
+
 // SYSTEM CONFIGURATION
 constexpr float TEMP_ALARM_THRESHOLD = 35.0f;
 
