@@ -1,4 +1,5 @@
 #include "DisplayTask.h"
+#include "config.h"
 
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
 
@@ -12,22 +13,29 @@ void vTaskUIManager(void *pvParameters) {
     u8g2.begin(); // Khởi động màn hình OLED
     
     SystemData_t local_data;
+    uint8_t Tab_index = 0;
+    InputEvent_t ev = EVENT_NONE;
 
     for (;;) {
-        uint8_t Tab_number = 1;
 
-        // 2. Chụp snapshot dữ liệu từ biến chung có Mutex bảo vệ
+        if(xQueueReceive(xQueueInputEvent, &ev, 0) == pdPASS){
+            if(ev == EVENT_ROTATE_CW || ev == EVENT_BUTTON_PRESS)
+                Tab_index = (Tab_index + 1) % Tab_Number;
+            else if(ev == EVENT_ROTATE_CCW){
+                    Tab_index = (Tab_index + Tab_Number - 1) % Tab_Number;
+            }
+        }
+
         if (xSemaphoreTake(xMutexData, pdMS_TO_TICKS(20)) == pdTRUE) {
             local_data = g_telemetry;
             xSemaphoreGive(xMutexData);
         }
         u8g2.setBitmapMode(1);
         u8g2.setFontMode(1);
-        // 3. TIẾN HÀNH "VẼ" GIAO DIỆN LÊN FRAMEBUFFER
+
         u8g2.clearBuffer(); // Bắt buộc xóa sạch frame cũ trước khi vẽ frame mới
         
-
-        if(Tab_number == 0){
+        if(Tab_index == 0){
             u8g2.setFont(u8g2_font_helvB10_tr);
 
             u8g2.drawStr(8, 21, "CPU");
@@ -41,7 +49,7 @@ void vTaskUIManager(void *pvParameters) {
             u8g2.drawStr(92, 45, "90%");
 
         }
-        else if(Tab_number == 1){
+        else if(Tab_index == 1){
             u8g2.drawXBM(28, 10, 19, 19, temperature_bits);
             u8g2.drawXBM(89, 10, 13, 19, humidity_bits);
 
@@ -55,7 +63,11 @@ void vTaskUIManager(void *pvParameters) {
             snprintf(buf, sizeof(buf), "%.1f%%", local_data.humidity);
             u8g2.drawStr(80, 50, buf);
         }
-            
+
+        for (int i = 0; i < Tab_Number; i++) {
+            if (i == Tab_index) u8g2.drawDisc(48 + i * 8, 60, 2); // Chấm đặc
+            else u8g2.drawCircle(48 + i * 8, 60, 2);                // Vòng tròn rỗng
+        }
         
         
         // 4. BẮN TOÀN BỘ 1KB TỪ RAM XUỐNG MÀN HÌNH VẬT LÝ QUA I2C
