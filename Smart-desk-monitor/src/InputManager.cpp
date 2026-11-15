@@ -26,7 +26,7 @@ void IRAM_ATTR isr_encoder_rotate() {
     if (delta != 0) {
         step_acc += delta;
 
-        // Đủ 4 vi bước (1 nấc khấc cơ học trên KY-040) mới đẩy 1 sự kiện vào Queue
+        // Đủ 2 vi bước (1 nấc khấc cơ học trên KY-040) mới đẩy 1 sự kiện vào Queue
         if (step_acc >= 2 || step_acc <= -2) {
             BaseType_t xHigherPriorityTaskWoken = pdFALSE;
             InputEvent_t event = (step_acc > 0) ? EVENT_ROTATE_CW : EVENT_ROTATE_CCW;

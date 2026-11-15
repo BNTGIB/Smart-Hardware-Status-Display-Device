@@ -14,6 +14,9 @@ void setup() {
     pinMode(PIN_ENCODER_DT, INPUT_PULLUP);
     pinMode(PIN_ENCODER_SW, INPUT_PULLUP);
 
+    pinMode(PIN_ALARM_BUZZER, OUTPUT);
+    pinMode(PIN_HEARTBEAT_LED, OUTPUT);
+
     attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_CLK), isr_encoder_rotate,  CHANGE);
     attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_DT),  isr_encoder_rotate, CHANGE);
     attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_SW), isr_encoder_press, FALLING);
