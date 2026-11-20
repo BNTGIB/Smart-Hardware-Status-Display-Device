@@ -3,6 +3,7 @@
 #include "Sensor.h"
 #include "DisplayTask.h"
 #include "InputManager.h"
+#include "PCTask.h"
 
 void setup() {
     Serial.begin(115200);
@@ -27,7 +28,8 @@ void setup() {
     xSemaphoreOverheat = xSemaphoreCreateBinary();
 
     xTaskCreate(vTaskSensorSample, "SensorTask", 2048, NULL, 1, NULL);
-    xTaskCreate(vTaskUIManager,     "UITask",     3072, NULL, 2, NULL); // Ưu tiên 2
+    xTaskCreate(vTaskUIManager,     "UITask",     3072, NULL, 2, NULL);
+    xTaskCreate(vPCTaskReciver, "WiFiUdpTask", 4096, NULL, 1, NULL);
 }
 
 void loop() {

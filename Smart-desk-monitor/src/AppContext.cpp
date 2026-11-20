@@ -1,6 +1,6 @@
 #include <AppContext.h>
 
-SystemData_t g_telemetry = {0, 0, 25.0f, 50.0f, 0};
+SystemData_t g_telemetry = {0, 0, 0, 0.0f, 0.0f, 0.0f, 0, false};
 
 QueueHandle_t xQueueInputEvent    = NULL;
 

@@ -58,6 +58,7 @@ void vTaskUIManager(void *pvParameters) {
         u8g2.clearBuffer(); // Bắt buộc xóa sạch frame cũ trước khi vẽ frame mới
         
         if(Tab_index == 0){
+            char buf[16];
             u8g2.setFont(u8g2_font_helvB10_tr);
 
             u8g2.drawStr(8, 21, "CPU");
@@ -66,9 +67,15 @@ void vTaskUIManager(void *pvParameters) {
 
             u8g2.setFont(u8g2_font_helvB12_tr);
 
-            u8g2.drawStr(10, 45, "90%");
-            u8g2.drawStr(50, 45, "90%");
-            u8g2.drawStr(92, 45, "90%");
+            
+            snprintf(buf, sizeof(buf), "%d%%", local_data.cpu_usage);
+            u8g2.drawStr(10, 45, buf);
+
+            snprintf(buf, sizeof(buf), "%d%%", local_data.ram_usage);
+            u8g2.drawStr(50, 45, buf);
+
+            snprintf(buf, sizeof(buf), "%d%%", local_data.gpu_usage);
+            u8g2.drawStr(92, 45, buf);
 
         }
         else if(Tab_index == 1){
