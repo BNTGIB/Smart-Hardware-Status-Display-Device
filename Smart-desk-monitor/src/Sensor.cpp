@@ -15,6 +15,7 @@ void vTaskSensorSample(void *pvParameters){
         vTaskDelayUntil(&xLastWakeTime, xPeriod);
 
         float hum = dht.readHumidity(); // Do Am
+        vTaskDelay(pdMS_TO_TICKS(50));
         float temp = dht.readTemperature();// Nhiet Do
 
         if(isnan(hum) || isnan(temp)){

@@ -5,8 +5,10 @@
 #include "InputManager.h"
 #include "PCTask.h"
 
+
 void setup() {
     Serial.begin(115200);
+    Serial.printf("Reset Reason: %d\n", esp_reset_reason());
 
     Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
     u8g2.begin();
@@ -29,7 +31,7 @@ void setup() {
 
     xTaskCreate(vTaskSensorSample, "SensorTask", 2048, NULL, 1, NULL);
     xTaskCreate(vTaskUIManager,     "UITask",     3072, NULL, 2, NULL);
-    xTaskCreate(vPCTaskReciver, "WiFiUdpTask", 6144, NULL, 1, NULL);
+    xTaskCreate(vPCTaskReciver, "WiFiUdpTask", 4096, NULL, 1, NULL);
 }
 
 void loop() {

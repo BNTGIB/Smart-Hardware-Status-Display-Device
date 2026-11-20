@@ -6,6 +6,7 @@ WiFiUDP   udp;
 
 void vPCTaskReciver(void *parameter){
     WiFi.mode(WIFI_STA);
+    WiFi.setSleep(false);
     WiFi.setTxPower(WIFI_POWER_8_5dBm);
 
     wifiMulti.addAP("Wifi Cot Nha", "uiterk20");
