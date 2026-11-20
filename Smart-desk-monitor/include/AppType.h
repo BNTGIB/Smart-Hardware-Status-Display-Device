@@ -13,7 +13,7 @@ typedef struct {
     uint8_t  cpu_usage;    // %
     uint8_t  ram_usage;    // %
     uint8_t  gpu_usage;
-    float    gpu_temp;
+    uint8_t    gpu_temp;
     float    temperature;  // C
     float    humidity;     // %
     uint32_t uptime_sec;   // s

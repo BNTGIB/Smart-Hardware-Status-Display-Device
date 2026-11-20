@@ -29,7 +29,7 @@ void setup() {
 
     xTaskCreate(vTaskSensorSample, "SensorTask", 2048, NULL, 1, NULL);
     xTaskCreate(vTaskUIManager,     "UITask",     3072, NULL, 2, NULL);
-    xTaskCreate(vPCTaskReciver, "WiFiUdpTask", 4096, NULL, 1, NULL);
+    xTaskCreate(vPCTaskReciver, "WiFiUdpTask", 6144, NULL, 1, NULL);
 }
 
 void loop() {

@@ -21,7 +21,7 @@ void vTaskUIManager(void *pvParameters) {
     u8g2.begin(); // Khởi động màn hình OLED
     const TickType_t xPeriod = pdMS_TO_TICKS(200);
 
-    for(int i=0 ; i<3; i++){
+    for(int i=0 ; i<1; i++){
         digitalWrite(PIN_ALARM_BUZZER, HIGH);
         digitalWrite(PIN_HEARTBEAT_LED, HIGH);
         vTaskDelay(xPeriod);
@@ -58,27 +58,6 @@ void vTaskUIManager(void *pvParameters) {
         u8g2.clearBuffer(); // Bắt buộc xóa sạch frame cũ trước khi vẽ frame mới
         
         if(Tab_index == 0){
-            char buf[16];
-            u8g2.setFont(u8g2_font_helvB10_tr);
-
-            u8g2.drawStr(8, 21, "CPU");
-            u8g2.drawStr(48, 21, "RAM");
-            u8g2.drawStr(90, 21, "GPU");
-
-            u8g2.setFont(u8g2_font_helvB12_tr);
-
-            
-            snprintf(buf, sizeof(buf), "%d%%", local_data.cpu_usage);
-            u8g2.drawStr(10, 45, buf);
-
-            snprintf(buf, sizeof(buf), "%d%%", local_data.ram_usage);
-            u8g2.drawStr(50, 45, buf);
-
-            snprintf(buf, sizeof(buf), "%d%%", local_data.gpu_usage);
-            u8g2.drawStr(92, 45, buf);
-
-        }
-        else if(Tab_index == 1){
             u8g2.drawXBM(28, 10, 19, 19, temperature_bits);
             u8g2.drawXBM(89, 10, 13, 19, humidity_bits);
 
@@ -92,11 +71,39 @@ void vTaskUIManager(void *pvParameters) {
             snprintf(buf, sizeof(buf), "%.1f%%", local_data.humidity);
             u8g2.drawStr(80, 50, buf);
         }
+        else if(Tab_index == 1){
+            char buf[16];
+            u8g2.setFont(u8g2_font_helvB10_tr);
+
+            u8g2.drawStr(14, 21, "CPU");
+            u8g2.drawStr(84, 21, "RAM");
+
+            u8g2.setFont(u8g2_font_helvB12_tr);
+
+            snprintf(buf, sizeof(buf), "%d%%", local_data.cpu_usage);
+            u8g2.drawStr(16, 45, buf);
+
+            snprintf(buf, sizeof(buf), "%d%%", local_data.ram_usage);
+            u8g2.drawStr(86, 45, buf);
+
+            u8g2.drawLine(64, 15, 64, 50);
+        }
         else if(Tab_index == 2){
-            u8g2.drawXBMP(45, 10, 38, 38, like_icon_bits);
+            char buf[16];
+            u8g2.setFont(u8g2_font_helvB12_tr);
+            u8g2.drawStr(45, 20, "GPU");
+            
+            u8g2.setFont(u8g2_font_helvB12_tr);
+            snprintf(buf, sizeof(buf), "%d%%", local_data.gpu_usage);
+            u8g2.drawStr(15, 45, buf);
+
+            snprintf(buf, sizeof(buf), "%d C", local_data.gpu_temp);
+            u8g2.drawStr(85, 45, buf);
+
+            u8g2.drawLine(64, 25, 64, 50);
         }
         else if(Tab_index == 3){
-            u8g2.drawXBMP(42, 9, 43, 46, hearts_bits);
+            u8g2.drawXBMP(45, 10, 38, 38, like_icon_bits);
         }
 
 

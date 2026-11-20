@@ -35,7 +35,7 @@ def main():
         print(f"[WARN] Khong the khoi tao NVML ({e}), bo qua thong so GPU.")
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    esp_ip = None
+    esp_ip = None   
 
     print(f"[PC MONITOR] Dang tim kiem {ESP_HOST}...")
 
