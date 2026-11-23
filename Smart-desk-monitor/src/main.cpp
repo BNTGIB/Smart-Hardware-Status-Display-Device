@@ -10,6 +10,10 @@ void setup() {
     Serial.begin(115200);
     Serial.printf("Reset Reason: %d\n", esp_reset_reason());
 
+    vTaskDelay(pdMS_TO_TICKS(500));
+
+    initSensor();
+     
     Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
     u8g2.begin();
 

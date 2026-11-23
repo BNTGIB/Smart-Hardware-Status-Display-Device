@@ -1,8 +1,10 @@
 #pragma once
 
-#include <DHT.h>
+#include <DHTesp.h>
+
+
+extern DHTesp dht;
 
 void vTaskSensorSample(void *pvParameters);
 
-extern DHT dht;
-
+void initSensor();

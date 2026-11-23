@@ -9,6 +9,7 @@ void vPCTaskReciver(void *parameter){
     WiFi.setSleep(false);
     WiFi.setTxPower(WIFI_POWER_8_5dBm);
 
+    wifiMulti.addAP("BDS Quang Vu", "kiet2007");
     wifiMulti.addAP("Wifi Cot Nha", "uiterk20");
 
     bool udp_Started = false;
