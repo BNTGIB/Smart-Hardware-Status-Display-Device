@@ -3,36 +3,39 @@
 #include "AppContext.h"
 
 
-DHT dht(DHT_DATA_PIN, DHT11);
+DHTesp dht;
+
+void initSensor() {
+    // Khởi tạo chân GPIO4 cho loại cảm biến DHT11
+    dht.setup(DHT_DATA_PIN, DHTesp::DHT11);
+}
 
 void vTaskSensorSample(void *pvParameters){
-    dht.begin();
-
     TickType_t xLastWakeTime = xTaskGetTickCount();
     const TickType_t xPeriod = pdMS_TO_TICKS(2000);
 
     for(;;){
         vTaskDelayUntil(&xLastWakeTime, xPeriod);
+        TempAndHumidity newValues = dht.getTempAndHumidity();
 
-        float hum = dht.readHumidity(); // Do Am
-        vTaskDelay(pdMS_TO_TICKS(50));
-        float temp = dht.readTemperature();// Nhiet Do
-
-        if(isnan(hum) || isnan(temp)){
+        if(isnan(newValues.humidity) || isnan(newValues.temperature)){
             if(xSemaphoreTake(xMutexSerial, pdMS_TO_TICKS(10)) == pdTRUE){
                 Serial.println(F("[DHT11] Lỗi đọc dữ liệu (NaN) - Bỏ qua chu kỳ này"));
-                hum = 0.99;
-                temp = 0.99;
+                newValues.humidity = 1;
+                newValues.temperature = 1;
                 xSemaphoreGive(xMutexSerial);
             }
             continue;
         }
 
-        if(xSemaphoreTake(xMutexData, pdMS_TO_TICKS(50))==pdTRUE){
-            g_telemetry.temperature = temp;
-            g_telemetry.humidity = hum;
-            xSemaphoreGive(xMutexData);
+        // Chỉ cập nhật vào g_telemetry khi trạng thái đọc là ERROR_NONE (không nhiễu)
+        if (dht.getStatus() == DHTesp::ERROR_NONE) {
+            if (xSemaphoreTake(xMutexData, pdMS_TO_TICKS(20)) == pdTRUE) {
+                g_telemetry.temperature = newValues.temperature;
+                g_telemetry.humidity    = newValues.humidity;
+                                    
+                xSemaphoreGive(xMutexData);
+            }
         }
-
     }
 }
