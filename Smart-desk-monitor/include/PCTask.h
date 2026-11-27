@@ -12,6 +12,5 @@ namespace NetConfig {
 
 extern WiFiMulti wifiMulti;
 extern WiFiUDP udp;
-extern bool udp_Started;
 
 void vPCTaskReciver(void *parameter);

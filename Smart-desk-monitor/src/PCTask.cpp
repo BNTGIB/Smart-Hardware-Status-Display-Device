@@ -12,7 +12,7 @@ void vPCTaskReciver(void *parameter){
     wifiMulti.addAP("BDS Quang Vu", "kiet2007");
     wifiMulti.addAP("Wifi Cot Nha", "uiterk20");
 
-    bool udp_Started = false;
+    // static bool udp_Started = false;
     char packet_buff[32];
 
     for(;;){

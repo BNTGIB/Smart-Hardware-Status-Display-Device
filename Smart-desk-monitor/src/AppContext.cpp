@@ -7,3 +7,5 @@ QueueHandle_t xQueueInputEvent    = NULL;
 SemaphoreHandle_t xMutexData = NULL;
 SemaphoreHandle_t xMutexSerial = NULL;
 SemaphoreHandle_t xSemaphoreOverheat = NULL;
+
+bool udp_Started = false;

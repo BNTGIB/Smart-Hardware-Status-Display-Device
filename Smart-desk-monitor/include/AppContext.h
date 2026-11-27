@@ -14,4 +14,7 @@ extern SemaphoreHandle_t xMutexData;
 extern SemaphoreHandle_t xMutexSerial;
 extern SemaphoreHandle_t xSemaphoreOverheat;
 
+extern bool udp_Started;
+
+
 
